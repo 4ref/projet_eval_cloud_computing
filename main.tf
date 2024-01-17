@@ -20,31 +20,35 @@ resource "azurerm_resource_group" "rg" {
   location = "eastus"
 }
 
-# Define an App Service plan for the web app
-resource "azurerm_service_plan" "appserviceplan" {
-  name                = "AGNG-webapp-asp"
+resource "azurerm_mysql_server" "agng-serveur" {
+  name                = "agng-mysqlserver"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  os_type             = "Linux"
-  sku_name            = "B1"
+
+  administrator_login          = "agng"
+  administrator_login_password = "Password.2024"
+
+  sku_name   = "GP_Gen5_2"
+  storage_mb = 5120
+  version    = "5.7"
+
+  auto_grow_enabled                 = true
+  backup_retention_days             = 7
+  geo_redundant_backup_enabled      = true
+  infrastructure_encryption_enabled = true
+  public_network_access_enabled     = false
+  ssl_enforcement_enabled           = true
+  ssl_minimal_tls_version_enforced  = "TLS1_2"
 }
 
-# Create an Azure Linux web app
-resource "azurerm_linux_web_app" "webapp" {
-  name                = "AGNG-webapp"
-  location            = azurerm_resource_group.rg.location
+resource "azurerm_mysql_database" "agng-database" {
+  name                = "agngdb"
   resource_group_name = azurerm_resource_group.rg.name
-  service_plan_id     = azurerm_service_plan.appserviceplan.id
-  https_only          = true
-  site_config {
-    minimum_tls_version = "1.2"
+  server_name         = azurerm_mysql_server.agng-serveur.name
+  charset             = "utf8"
+  collation           = "utf8_unicode_ci"
+  # prevent the possibility of accidental data loss
+  lifecycle {
+    prevent_destroy = true
   }
-}
-
-resource "azurerm_app_service_source_control" "sourcecontrol" {
-  app_id                  = azurerm_linux_web_app.webapp.id
-  repo_url                = "https://github.com/4ref/projet-eval-symfony"
-  branch                  = "main"
-  use_manual_integration  = true
-  use_mercurial           = false
 }
