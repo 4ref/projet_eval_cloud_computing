@@ -21,7 +21,7 @@ provider "azurerm" {
 # Create an Azure resource group
 resource "azurerm_resource_group" "rg" {
   name     = "agng_resource_group"
-  location = "eastus"
+  location = "West Europe"
 }
 
 resource "azurerm_mysql_server" "agng-serveur" {
@@ -60,10 +60,28 @@ resource "azurerm_public_ip" "agng_public_ip" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
+  sku ="Standard"
+}
 
-  tags = {
-    environment = "Production"
-  }
+resource "azurerm_network_security_group" "agng_network_security_group" {
+  name                = "agng_nsg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  
+}
+
+resource "azurerm_network_security_rule" "agng_ssh_rule" {
+  name                        = "AllowSSH"
+  priority                    = 1001
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.agng_network_security_group.name
 }
 
 resource "azurerm_virtual_network" "agng_virtual_network" {
@@ -97,10 +115,17 @@ resource "azurerm_network_interface" "agng_ni" {
   resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
-    name                          = "testconfiguration1"
+    name                          = "agng_ip_config"
     subnet_id                     = azurerm_subnet.agng_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.agng_public_ip.id
   }
+}
+
+resource "azurerm_network_interface_security_group_association" "nsg_association" {
+  network_interface_id      = azurerm_network_interface.agng_ni.id
+  network_security_group_id = azurerm_network_security_group.agng_network_security_group.id
+
 }
 
 resource "azurerm_ssh_public_key" "agng_public_key" {
@@ -120,7 +145,7 @@ resource "azurerm_linux_virtual_machine" "angn_vm" {
 
  admin_ssh_key {
     username = "agng"
-    public_key = file("id_rsa.pub")
+    public_key = azurerm_ssh_public_key.agng_public_key.public_key
   }
 
 os_disk {
@@ -135,3 +160,11 @@ source_image_reference {
     version   = "latest"
 }
 }
+
+# resource "azurerm_storage_account" "agng-storage" {
+#   name                     = "agngstorage"
+#   resource_group_name      = azurerm_resource_group.rg.name
+#   location                 = azurerm_resource_group.rg.location
+#   account_tier             = "Standard"
+#   account_replication_type = "LRS"
+# }
