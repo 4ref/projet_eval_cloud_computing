@@ -91,15 +91,6 @@ resource "azurerm_virtual_network" "agng_virtual_network" {
   resource_group_name = azurerm_resource_group.rg.name
   dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
- subnet {
-    name           = "subnet1"
-    address_prefix = "10.0.1.0/24"
-  }
-
-  tags = {
-    environment = "Production"
-  }
-
 }
 
 resource "azurerm_subnet" "agng_subnet" {
