@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 0 auto;
+            font: 18px/1.5 sans-serif;
+            position: absolute;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+
+        label {
+            font-weight: bold;
+            padding: 1em 0.5em;
+        }
+
+        input {
+            background-color: rgba(128, 128, 128, 0.35);
+            border-radius: 10px;
+            padding: 1em 0.5em;
+        }
+
+        #edit_profile_civilite {
+            background-color: rgba(128, 128, 128, 0.35);
+            border-radius: 10px;
+            margin: 0.5em;
+            padding: 1em 0.5em;
+        }
+
+        #edit_profile_editer {
+            margin: 0.5em;
+            padding: 0.5em;
+            background-color: #72729e;
+            border-radius: 10px;
+            color: white;
+        }
+
+        #cancel-btn {
+            margin: 0.5em;
+            padding: 0.7em;
+            background-color: #750d26;
+            border-radius: 10px;
+            color: white;
+        }
+    </style>
+
+    <div class="example-wrapper bg-gray-50 h-screen w-screen">
+
+        {# profile data #}
+        <div class="flex flex-col w-[60%] px-12">
+            {{ form_start(form_value) }}
+
+            {# title #}
+            <div class="font-bold text-left py-8">
+                <h1 class="inline text-4xl font-bold">Editez
+                    <h2 class="inline underline italic text-gray-500">
+                        {{ membre.email }}
+                    </h2>
+                </h1>
+            </div>
+
+            <div class="flex flex-row">
+                <div class="flex flex-col grow pr-2">
+                    {{ form_label(form_value.pseudo) }}
+                    {{ form_widget(form_value.pseudo, {'attr': {'required': 'required'}}) }}
+                </div>
+                <div class="flex flex-col grow pl-2">
+                    {{ form_label(form_value.email) }}
+                    {{ form_widget(form_value.email) }}
+                </div>
+            </div>
+            <div class="flex flex-row">
+                <div class="flex flex-col grow pr-2">
+                    {{ form_label(form_value.nom, 'Nom') }}
+                    {{ form_widget(form_value.nom) }}
+                </div>
+                <div class="flex flex-col grow pl-2">
+                    {{ form_label(form_value.prenom, 'Prénom') }}
+                    {{ form_widget(form_value.prenom) }}
+                </div>
+            </div>
+
+            <div class="py-2">
+                {{ form_label(form_value.civilite, 'Civilité') }}
+                {{ form_widget(form_value.civilite) }}
+            </div>
+
+            <div class="flex flex-row items-center ">
+                {# editer #}
+                <div class="py-2">
+                    {{ form_label(form_value.editer, 'Editer') }}
+                    {{ form_widget(form_value.editer) }}
+                </div>
+
+                {# cancel #}
+                <div class="py-2">
+                    <a id="cancel-btn" href="{{ path('gestion_membres') }}">
+                        Annuler
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        {{ form_end(form_value) }}
+    </div>
+{% endblock %}

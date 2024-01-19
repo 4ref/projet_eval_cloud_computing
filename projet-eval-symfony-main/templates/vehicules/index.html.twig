@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="flex flex-col justify-start w-screen">
+        {# title #}
+        <div class="font-bold py-8 px-12">
+            <h1 class="text-4xl">Les vehicules disponibles !</h1>
+        </div>
+
+        <div class="font-bold text-left px-12">
+            <h5 class="text-gray-500">De: {{ dateStart | date("m/d/Y") }}</h5>
+        </div>
+        <div class="font-bold text-left px-12">
+            <h5 class="text-gray-500">A: {{ dateEnd | date("m/d/Y") }}</h5>
+        </div>
+
+        <div class="flex flex-wrap justify-center px-6">
+            {% for vehicule in vehicules %}
+                <div class="max-w-sm rounded-xl m-4
+                border overflow-hidden shadow-lg">
+                    <img class="w-2/3 mx-auto"
+                         src="{{ asset('vehicules_directory/' ~ vehicule.photo) }}">
+                    <div class="px-6 py-4">
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-col">
+                                <div class="font-bold text-xl mb-2">{{ vehicule.titre }} / {{ vehicule.marque }}</div>
+                                <div class="font-bold text-gray-500 text-md mb-2">{{ vehicule.modele }}</div>
+                            </div>
+
+                            <a href="{{ path('add_commande',
+                                {'vehicule_id': vehicule.id, 'date_start':  dateStart.timestamp, 'date_end' : dateEnd.timestamp}) }}"
+                               class="bg-blue-500 hover:bg-blue-400 text-white font-bold
+                                      py-2 px-4 border-b-4 border-blue-700 h-12
+                                      hover:border-blue-500 rounded">
+                                Réserver
+                            </a>
+                        </div>
+
+                        <p class="text-gray-700 text-base">
+                            {{ vehicule.description }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

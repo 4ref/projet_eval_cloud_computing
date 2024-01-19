@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 0 auto;
+            font: 18px/1.5 sans-serif;
+            position: absolute;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        #signup_pseudo,
+        #signup_mdp,
+        #signup_email,
+        #signup_status,
+        #signup_civilite,
+        #signup_nom,
+        #signup_prenom {
+            padding: 0.5em;
+            margin: 0.1em;
+            border: 3px solid #729e87;
+            border-radius: 19px;
+            width: 100%;
+        }
+
+        #signup_Creer {
+            width: 100%;
+            margin-top: 1em;
+            padding: 0.4em;
+            background-color: #729e87;
+            border-radius: 10px;
+            color: white;
+        }
+    </style>
+
+    <div class="example-wrapper bg-green-50 w-screen">
+        {# title #}
+        <div class="font-bold text-center p-12">
+            <h1 class="text-4xl font-bold">Nouveau compte, Bienvenue !</h1>
+        </div>
+
+        {# form #}
+        <div class="flex flex-col w-[50%]
+        mx-auto mb-16 px-16 py-8 shadow-xl
+        bg-white rounded-xl">
+            {{ form_start(form_value) }}
+            {{ form_label(form_value.pseudo, 'Pseudo') }}
+            {{ form_widget(form_value.pseudo) }}
+
+            {{ form_label(form_value.email, 'Email') }}
+            {{ form_widget(form_value.email) }}
+
+            {{ form_label(form_value.mdp, 'Mot de passe') }}
+            {{ form_widget(form_value.mdp) }}
+
+            <div class="flex flex-row">
+                <div class="flex flex-col grow pl-2">
+                    {{ form_label(form_value.prenom, 'Prénom') }}
+                    {{ form_widget(form_value.prenom) }}
+                </div>
+                <div class="flex flex-col grow pr-2">
+                    {{ form_label(form_value.nom, 'Nom') }}
+                    {{ form_widget(form_value.nom) }}
+                </div>
+
+                <div class="flex flex-col grow pl-2">
+                    {{ form_label(form_value.civilite, 'Civilité') }}
+                    {{ form_widget(form_value.civilite) }}
+                </div>
+            </div>
+
+            {{ form_errors(form_value) }}
+            {{ form_end(form_value) }}
+        </div>
+    </div>
+{% endblock %}

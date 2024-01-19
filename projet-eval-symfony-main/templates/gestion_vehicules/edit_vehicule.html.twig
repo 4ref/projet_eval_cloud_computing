@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 0 auto;
+            font: 18px/1.5 sans-serif;
+            position: absolute;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+
+
+        label {
+            font-weight: bold;
+            padding: 0 0.5em;
+        }
+
+        #edit_vehicule_titre,
+        #edit_vehicule_marque,
+        #edit_vehicule_modele,
+        #edit_vehicule_prix_journalier,
+        #edit_vehicule_description,
+        #edit_vehicule_photo {
+            background-color: rgba(128, 128, 128, 0.35);
+            border-radius: 10px;
+            margin: 0.5em;
+            padding: 1em 0.5em;
+        }
+
+        #edit_vehicule_editer {
+            margin: 0.5em;
+            padding: 0.5em;
+            background-color: #72729e;
+            border-radius: 10px;
+            color: white;
+        }
+
+        #cancel-btn {
+            margin: 0.5em;
+            padding: 0.7em;
+            background-color: #750d26;
+            border-radius: 10px;
+            color: white;
+        }
+    </style>
+
+    <div class="example-wrapper bg-gray-50 w-screen">
+        {# edit vehicule title #}
+        <div class="font-bold text-left px-12 pt-12">
+            <h1 class="text-4xl font-bold">Editez ce véhicule !</h1>
+        </div>
+
+        {{ form_start(form_value) }}
+        <div class="flex flex-row justify-between w-screen">
+
+            {# titre, modele, marque, prix #}
+            <div class="grow flex flex-col pl-8 pt-4 pr-32">
+                <div class="flex flex-row">
+                    <div class="flex flex-col grow p-1">
+                        {{ form_label(form_value.titre, 'Titre') }}
+                        {{ form_widget(form_value.titre) }}
+                    </div>
+                    <div class="flex flex-col grow p-1">
+                        {{ form_label(form_value.marque, 'Marque') }}
+                        {{ form_widget(form_value.marque) }}
+                    </div>
+                </div>
+
+                <div class="flex flex-row">
+                    <div class="flex flex-col grow p-1">
+                        {{ form_label(form_value.modele, 'Modèle') }}
+                        {{ form_widget(form_value.modele) }}
+                    </div>
+                    <div class="flex flex-col grow p-1">
+                        {{ form_label(form_value.prix_journalier, 'Prix') }}
+                        {{ form_widget(form_value.prix_journalier) }}
+                    </div>
+                </div>
+
+                <div class="flex flex-row items-center ">
+                    {# editer #}
+                    <div class="py-2">
+                        {{ form_label(form_value.editer, 'Editer') }}
+                        {{ form_widget(form_value.editer) }}
+                    </div>
+
+                    {# cancel #}
+                    <div class="py-2">
+                        <a id="cancel-btn" href="{{ path('gestion_membres') }}">
+                            Annuler
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {# photo and description #}
+            <div class="grow flex flex-col pr-8 pt-4">
+                <div class="flex flex-col p-1">
+                    {{ form_label(form_value.description, 'Description') }}
+                    {{ form_widget(form_value.description) }}
+                </div>
+
+                <div class="flex flex-col p-1">
+                    {{ form_label(form_value.photo, 'Photo') }}
+                    {{ form_widget(form_value.photo) }}
+                </div>
+            </div>
+
+        </div>
+        {{ form_errors(form_value) }}
+        {{ form_end(form_value) }}
+
+        <img class="w-[35em] h-auto mx-auto my-4 border"
+             src="{{ asset('vehicules_directory/' ~ vehicule.photo) }}">
+    </div>
+{% endblock %}

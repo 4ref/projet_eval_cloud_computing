@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 0 auto;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="example-wrapper px-12">
+        {# title #}
+        <div class="pt-8">
+            <h1 class="font-bold text-4xl">Confirmer votre réservation</h1>
+            <p class="pt-2">{{ vehicule.modele }} / {{ vehicule.marque }}</p>
+            <p class="pb-4">{{ vehicule.titre }}</p>
+        </div>
+
+        <div class="flex flex-row justify-between">
+            <div class="flex flex-col grow-1 bg-gray-200 p-4 rounded-xl">
+                <h4 class="pt-2 italic">Pour: {{ currentUser.email }}</h4>
+
+                {# description #}
+                <div class="pt-2 w-3/4">
+                    <h4 class="font-bold">Description</h4>
+                    <p>{{ vehicule.description }}</p>
+                </div>
+
+                {# rent days #}
+                <div class="pt-2 ">
+                    <h4 class="font-bold">Commander pour </h4>
+                    <p>{{ interval.days }} jour(s)</p>
+                </div>
+
+                <div class="flex flex-row pt-4">
+                    {# from #}
+                    <div class="flex flex-col">
+                        <h4 class="font-bold">Du </h4>
+                        <p>{{ from | date }}</p>
+                    </div>
+
+                    {# to #}
+                    <div class="flex flex-col px-4">
+                        <h4 class="font-bold">A </h4>
+                        <p>{{ to | date }}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-row items-center">
+                    {# prix journalier #}
+                    <div class="pt-2 pr-8">
+                        <h4 class="font-bold">Prix journalier</h4>
+                        <p>{{ vehicule.prixJournalier }} euros</p>
+                    </div>
+
+                    {# prix total #}
+                    <div class="pt-2">
+                        <h4 class="font-bold">Prix Total</h4>
+                        <p>{{ vehicule.prixJournalier * interval.days }} euros</p>
+                    </div>
+                </div>
+
+                {# submit button #}
+                {{ form_start(form_value) }}
+                {{ form_label(form_value.commander, 'Commander') }}
+                {{ form_widget(form_value.commander) }}
+                {{ form_end(form_value) }}
+            </div>
+
+            {# vehicule photo #}
+            <div class="flex flex-col justify-center items-center grow-1">
+                <img src="{{ asset('vehicules_directory/' ~ vehicule.photo) }}"
+                     class="w-4/6 h-auto m-0 p-0 ">
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

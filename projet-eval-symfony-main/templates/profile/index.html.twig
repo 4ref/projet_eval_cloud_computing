@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 0 auto;
+            font: 18px/1.5 sans-serif;
+            position: absolute;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+
+        label {
+            font-weight: bold;
+            padding: 1em 0.5em;
+        }
+
+        input {
+            background-color: rgba(128, 128, 128, 0.35);
+            border-radius: 10px;
+            padding: 1em 0.5em;
+        }
+
+        #edit_profile_civilite {
+            background-color: rgba(128, 128, 128, 0.35);
+            border-radius: 10px;
+            margin: 0.5em;
+            padding: 1em 0.5em;
+        }
+
+        #edit_profile_editer {
+            position: relative;
+            left: 2.5%;
+            width: 10%;
+            margin: 0.5em;
+            padding: 0.5em;
+            background-color: #72729e;
+            border-radius: 10px;
+            color: white;
+        }
+    </style>
+
+    <div class="example-wrapper bg-gray-50 h-screen w-screen">
+
+        <div class="flex flex-row top-0 p-5 justify-between">
+            {# title #}
+            <div class="font-bold text-left px-12 py-8">
+                <h1 class="text-4xl font-bold">Votre profile !</h1>
+            </div>
+
+            <div class="flex flex-row top-0 p-5">
+                {# logout #}
+                <a class="top-8 right-12 p-4 mx-2
+                    rounded-xl shadow-xl text-white
+                    bg-red-500"
+                   href="{{ path('logout') }}">Logout</a>
+
+
+                {# home #}
+                <a class="top-8 right-[10%] p-5 mx-2
+                    rounded-xl shadow-xl
+                    bg-green-500" href="{{ path('home') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
+                        <style>svg {
+                                fill: #ffffff
+                            }</style>
+                        <path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/>
+                    </svg>
+                </a>
+
+                {# gestions if admin #}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="rounded-xl shadow-xl mx-2 p-2 text-white
+                    bg-gray-500 flex items-center justify-center"
+                       href="{{ path('gestion_vehicules') }}">
+                        Gestion des Voitures
+                    </a>
+
+                    <a class="rounded-xl shadow-xl mx-2 p-2 text-white
+                    bg-gray-500 flex items-center justify-center"
+                       href="{{ path('gestion_commandes') }}">
+                        Gestion des Commandes
+                    </a>
+
+                    <a class="rounded-xl shadow-xl mx-2 p-2 text-white
+                    bg-gray-500 flex items-center justify-center"
+                       href="{{ path('gestion_membres') }}">
+                        Gestion des Membres
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        {# profile data #}
+        <div class="flex flex-col w-[60%] px-12">
+            {{ form_start(form_value) }}
+
+            <div class="flex flex-row">
+                <div class="flex flex-col grow pr-2">
+                    {{ form_label(form_value.pseudo) }}
+                    {{ form_widget(form_value.pseudo, {'attr': {'required': 'required'}}) }}
+                </div>
+                <div class="flex flex-col grow pl-2">
+                    {{ form_label(form_value.email) }}
+                    {{ form_widget(form_value.email) }}
+                </div>
+            </div>
+            <div class="flex flex-row">
+                <div class="flex flex-col grow pr-2">
+                    {{ form_label(form_value.nom, 'Nom') }}
+                    {{ form_widget(form_value.nom) }}
+                </div>
+                <div class="flex flex-col grow pl-2">
+                    {{ form_label(form_value.prenom, 'Prénom') }}
+                    {{ form_widget(form_value.prenom) }}
+                </div>
+            </div>
+
+            <div class="py-2">
+                {{ form_label(form_value.civilite, 'Civilité') }}
+                {{ form_widget(form_value.civilite) }}
+            </div>
+        </div>
+
+        {{ form_end(form_value) }}
+    </div>
+
+{% endblock %}

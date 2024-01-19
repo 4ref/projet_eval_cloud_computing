@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 0 auto;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 2rem;
+        }
+
+        .form-home-input {
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 1em;
+        }
+
+        #home_date_heure_depart_date_month,
+        #home_date_heure_depart_date_day,
+        #home_date_heure_depart_date_year,
+        #home_date_heure_depart_time_hour,
+        #home_date_heure_depart_time_minute,
+        #home_date_heure_fin_date_month,
+        #home_date_heure_fin_date_day,
+        #home_date_heure_fin_date_year,
+        #home_date_heure_fin_time_hour,
+        #home_date_heure_fin_time_minute {
+            padding: 0.5em;
+            margin: 0 0.1em;
+            border: 3px solid #72729e;
+            border-radius: 10%;
+        }
+
+        .go-btn {
+            width: 50%;
+            padding: 0.4em;
+            background-color: #72729e;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .profile-btn {
+            position: absolute;
+            top: 1%;
+            right: 3%;
+            padding: 0.7em;
+            z-index: 10;
+            background-color: white;
+            border-radius: 19px;
+        }
+    </style>
+
+    <div class="relative example-wrapper
+            flex flex-col items-center">
+
+        {# my profile #}
+        <div class="profile-btn">
+            <a href={{ path('profile') }}>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <p class="text-center text-[#72729e]">{{ app.user.pseudo }}</p>
+                {% else %}
+                    <p class="text-center text-[#72729e]">
+                        Mon profile
+                    </p>
+                {% endif %}
+            </a>
+        </div>
+
+        {# title #}
+        <div class="absolute mx-auto pt-[7%]">
+            <h1 class="text-7xl font-bold text-white shadow-xl">
+                Louez une voiture
+            </h1>
+        </div>
+
+        {# form #}
+        <div class="flex flex-row justify-center absolute mx-auto pt-[17%]">
+            <div class="flex flex-row p-16 shadow-xl bg-white rounded-md">
+                {{ form_start(form_value) }}
+                {{ form_label(form_value.date_heure_depart, 'De', {'attr': {'class': 'form-home-label'}}) }}
+                {{ form_widget(form_value.date_heure_depart, {'attr': {'class': 'form-home-input'}}) }}
+
+                {{ form_label(form_value.date_heure_fin, 'A', {'attr': {'class': 'form-home-label'}}) }}
+                {{ form_widget(form_value.date_heure_fin, {'attr': {'class': 'form-home-input'}}) }}
+
+                <a href="#vehicule-dispo">
+                    {{ form_widget(form_value.go, {'attr': {'class': 'go-btn'}}) }}
+                </a>
+
+                {{ form_end(form_value) }}
+            </div>
+        </div>
+
+        {# background #}
+        <img class="h-1/6 w-full" src={{ asset("/assets/home-car.png") }} alt="">
+
+        {% if dateStart is not null and dateEnd is not null %}
+            {% include 'vehicules/index.html.twig' %}
+        {% endif %}
+    </div>
+
+{% endblock %}

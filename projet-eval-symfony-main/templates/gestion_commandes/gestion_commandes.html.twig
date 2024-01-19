@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 0 auto;
+            font: 18px/1.5 sans-serif;
+            position: absolute;
+        }
+
+        .example-wrapper {
+            padding: 2px 6px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+    </style>
+
+    <script defer>
+        function confirmDelete(actionUrl, actionType) {
+            // to make sure we target the delete href.
+            if (actionType === 'delete') {
+                let isConfirmed = confirm("Êtes-vous sûr de vouloir supprimer cette commande ?");
+
+                if (isConfirmed) {
+                    window.location.href = actionUrl;
+                }
+            }
+        }
+    </script>
+
+    <div class="example-wrapper w-screen">
+        <div class="relative flex flex-col overflow-x-auto m-8">
+            {# title #}
+            <div class="font-bold text-left pb-2">
+                <h1 class="text-4xl font-bold">Les commandes actuelles !</h1>
+            </div>
+
+            <div class="inline-block min-w-full py-2">
+
+                <table class="min-w-full text-left text-sm
+                                      font-light dark:border-neutral-500">
+                    <thead class="border-b font-medium dark:border-neutral-500">
+                    <tr>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">#</th>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">Commande</th>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">Membre</th>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">Vehicule</th>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">Date Depart</th>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">Date Fin</th>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">Prix total</th>
+                        <th scope="col" class="border-r dark:border-neutral-500 px-6 py-4">Date d'enregistrement</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for commande in commandes %}
+                        <tr class="border-b dark:border-neutral-500">
+                            <td class="border-r dark:border-neutral-500
+                                               whitespace-nowrap px-6 py-4 font-medium">
+
+                                {# delete commande #}
+                                <button onclick="confirmDelete('{{ path('delete_commande',
+                                                {'id': commande.id}) }}', 'delete')">
+                                    <svg id="delete" xmlns="http://www.w3.org/2000/svg" height="1em"
+                                         viewBox="0 0 448 512">
+                                        <style>#delete {
+                                                fill: #c31d1d;
+                                            }</style>
+                                        <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                                    </svg>
+                                </button>
+
+                            </td>
+                            <td class="border-r dark:border-neutral-500 whitespace-nowrap px-6 py-4">
+                                {{ commande.id }}
+                            </td>
+                            <td class="border-r dark:border-neutral-500 whitespace-nowrap px-6 py-4">
+                                {{ commande.membre.email }}
+                            </td>
+                            <td class="border-r dark:border-neutral-500 whitespace-nowrap px-6 py-4">
+                                {{ commande.vehicule.marque }}
+                            </td>
+                            <td class="border-r dark:border-neutral-500 whitespace-nowrap px-6 py-4">
+                                {{ commande.dateHeureDepart | date }}
+                            </td>
+                            <td class="border-r dark:border-neutral-500 whitespace-nowrap px-6 py-4">
+                                {{ commande.dateHeureFin | date }}
+                            </td>
+                            <td class="border-r dark:border-neutral-500 whitespace-normal px-6 py-4">
+                                {{ commande.prixTotal }}
+                            </td>
+                            <td class="border-r dark:border-neutral-500 whitespace-normal px-6 py-4">
+                                {{ commande.dateEnregistrement | date }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
