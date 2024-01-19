@@ -13,8 +13,8 @@ Technologies et Outils utilisé dans ce projet:
 AGNG
 
 ### membres: 
-* M'hamed LEHBAB
-* Oualid RAHHOUTI
+* M'hamed LEHBAB (4ref et GitGud31)
+* Oualid RAHHOUTI (Oualidrahhouti)
 
 ### Resources Azure 
 * Service plan
